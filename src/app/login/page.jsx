@@ -1,21 +1,22 @@
 'use client'
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useRouter } from 'next/navigation';
 import styles from './page.module.css';
 import instance from "@/utils/axios";
-// import { setUser } from "../../../Redux/features/users";
-// import { useSelector, useDispatch } from 'react-redux';
 
 export default function LoginPage() {
-    // const dispatch = useDispatch();
-    // const userData = useSelector(state => state.user.dataUser);
-    // const userToken = useSelector(state => state.user.token);
-
-    // console.log("Datos del usuario en Redux:", userData);
-    // console.log("Token del usuario en Redux:", userToken);
+    const Router = useRouter();
     const [formData, setFormData] = useState({
         email: "",
         password: "",
     });
+
+    useEffect(() => {
+        const user = localStorage.getItem('user');
+        if (user) {
+            Router.push('/tasks');
+        }
+    }, [Router]);
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -24,17 +25,18 @@ export default function LoginPage() {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        // console.log(formData);
         try {
             const response = await instance.post("/v1/users/login", formData);
             console.log(response.data);
-            dispatch(setUser({ dataUser: response.data }));
+            localStorage.setItem('user', JSON.stringify(response.data));
             setFormData({
                 email: '',
                 password: ''
             });
+            Router.push('/tasks');
+            window.location.reload();
         } catch (error) {
-            //console.error('Error de autenticación:', error);
+            console.error('Error de autenticación:', error);
         }
     };
 

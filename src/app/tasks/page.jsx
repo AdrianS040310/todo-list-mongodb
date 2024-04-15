@@ -5,14 +5,17 @@ import instance from '@/utils/axios';
 
 export default function TasksPage() {
     const [tasks, setTasks] = useState([]);
-    console.log(tasks);
     const [taskInput, setTaskInput] = useState('');
-    const idUser = "661c7ed1d110cd148508e92e";
+    const [dataUser, setDataUser] = useState({});
+    const idUser = dataUser.id;
+    console.log(idUser)
 
     // Obtener tareas del servidor
     const getTasksFromServer = async () => {
         try {
-            const response = await instance.get(`/v1/tasks/${idUser}`);
+            console.log(idUser)
+            const response = await instance.get(`/v1/tasks/${dataUser.id}`);
+            console.log(response.data)
             const tasksData = response.data;
             const formattedTasks = tasksData.map(task => ({
                 id: task._id,
@@ -100,7 +103,7 @@ export default function TasksPage() {
     const deleteTaskFromServer = async (tasksId) => {
         try {
             const response = await instance.delete(`/v1/tasks/${tasksId}`);
-            // console.log(response.data);
+            console.log(response.data);
         } catch (error) {
             // console.log("Error al eliminar tarea: ", error)
         }
@@ -120,9 +123,20 @@ export default function TasksPage() {
         }
     };
 
+
     useEffect(() => {
-        getTasksFromServer();
+        const user = localStorage.getItem('user');
+        if (user) {
+            const userData = JSON.parse(user);
+            setDataUser(userData);
+        }
     }, []);
+
+    useEffect(() => {
+        if (dataUser.id) {
+            getTasksFromServer();
+        }
+    }, [dataUser]);
 
     return (
         <div className={styles.container}>

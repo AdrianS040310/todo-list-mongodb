@@ -1,9 +1,11 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import styles from './page.module.css';
 import instance from '@/utils/axios';
 
 export default function RegisterPage() {
+    const Router = useRouter();
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -32,6 +34,13 @@ export default function RegisterPage() {
         }
 
     };
+
+    useEffect(() => {
+        const user = localStorage.getItem('user');
+        if (user) {
+            Router.push('/tasks');
+        }
+    }, []);
 
     return (
         <div className={styles.container}>
