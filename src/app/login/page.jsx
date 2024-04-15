@@ -27,14 +27,25 @@ export default function LoginPage() {
         event.preventDefault();
         try {
             const response = await instance.post("/v1/users/login", formData);
-            console.log(response.data);
-            localStorage.setItem('user', JSON.stringify(response.data));
-            setFormData({
-                email: '',
-                password: ''
-            });
-            Router.push('/tasks');
-            window.location.reload();
+            console.log(response.data)
+
+            if (typeof response.data == "object") {
+                localStorage.setItem('user', JSON.stringify(response.data));
+                alert("Has iniciado sesión")
+                setFormData({
+                    email: '',
+                    password: ''
+                });
+                window.location.reload();
+                Router.push('/tasks');
+                return;
+            }
+
+            if (response.data === "email o password incorrectos") {
+                alert("Email o password incorrecta");
+                return;
+            }
+
         } catch (error) {
             console.error('Error de autenticación:', error);
         }

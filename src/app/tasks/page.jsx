@@ -8,14 +8,11 @@ export default function TasksPage() {
     const [taskInput, setTaskInput] = useState('');
     const [dataUser, setDataUser] = useState({});
     const idUser = dataUser.id;
-    console.log(idUser)
 
     // Obtener tareas del servidor
     const getTasksFromServer = async () => {
         try {
-            console.log(idUser)
             const response = await instance.get(`/v1/tasks/${dataUser.id}`);
-            console.log(response.data)
             const tasksData = response.data;
             const formattedTasks = tasksData.map(task => ({
                 id: task._id,
@@ -24,7 +21,7 @@ export default function TasksPage() {
             }));
             setTasks(formattedTasks);
         } catch (error) {
-            console.error('Error fetching tasks:', error);
+            // console.error('Error fetching tasks:', error);
         }
     };
 
@@ -37,7 +34,7 @@ export default function TasksPage() {
                 setTaskInput('');
             }
         } catch (error) {
-            console.error('Error al añadir tarea:', error);
+            // console.error('Error al añadir tarea:', error);
         }
     };
 
@@ -46,7 +43,7 @@ export default function TasksPage() {
             await deleteTaskFromServer(taskId);
             setTasks(tasks.filter(task => task.id !== taskId));
         } catch (error) {
-            console.error('Error al eliminar tarea:', error);
+            // console.error('Error al eliminar tarea:', error);
         }
     };
 
@@ -55,16 +52,16 @@ export default function TasksPage() {
             await updateTaskOnServer(taskId, newText);
             setTasks(tasks.map(task => task.id === taskId ? { ...task, text: newText } : task));
         } catch (error) {
-            console.error('Error al editar tarea:', error);
+            // console.error('Error al editar tarea:', error);
         }
     };
 
-    const handleToggleComplete = async (taskId) => {
+    const handleToggleComplete = async (taskId, status) => {
         try {
-            const updatedTask = await toggleTaskCompletionOnServer(taskId);
+            const updatedTask = await toggleTaskCompletionOnServer(taskId, !status);
             setTasks(tasks.map(task => task.id === taskId ? { ...task, completed: !task.completed } : task));
         } catch (error) {
-            console.error('Error al marcar tarea como completada:', error);
+            // console.error('Error al marcar tarea como completada:', error);
         }
     };
 
@@ -110,14 +107,13 @@ export default function TasksPage() {
     };
 
     //Funcion para marcar como completada una tarea del servidor
-    const toggleTaskCompletionOnServer = async (taskId) => {
+    const toggleTaskCompletionOnServer = async (taskId, status) => {
         try {
             const sendable = {
                 id: taskId,
-                status: true
+                status: status
             };
             const response = await instance.patch("/v1/tasks", sendable);
-            // console.log(response.data)
         } catch (error) {
             // console.log("Error al marcar como completada la tarea", error)
         }
@@ -160,7 +156,7 @@ export default function TasksPage() {
                                 <span style={{ textDecoration: task.completed ? 'line-through' : 'none' }}>{task.text}</span>
                                 <div className={styles.options}>
                                     <button onClick={() => handleDeleteTask(task.id)}>Eliminar</button>
-                                    <button onClick={() => handleToggleComplete(task.id)}>
+                                    <button onClick={() => handleToggleComplete(task.id, task.completed)}>
                                         {task.completed ? 'Marcar incompleta' : 'Marcar completada'}</button>
                                     <button onClick={() => {
                                         const newText = prompt('Ingresa el nuevo nombre de la tarea:', task.text);
