@@ -55,3 +55,12 @@
 .navbar ul li a:active {
     color: #f8f8f8;
 }
+
+.btnCloseSesion {
+    background-color: red;
+    color: #fff;
+    height: 40px;
+    font-weight: 600;
+    border-color: #fff;
+    cursor: pointer;
+}

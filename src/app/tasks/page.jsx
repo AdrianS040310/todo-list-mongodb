@@ -155,15 +155,15 @@ export default function TasksPage() {
                             <div className={styles.list}>
                                 <span style={{ textDecoration: task.completed ? 'line-through' : 'none' }}>{task.text}</span>
                                 <div className={styles.options}>
-                                    <button onClick={() => handleDeleteTask(task.id)}>Eliminar</button>
-                                    <button onClick={() => handleToggleComplete(task.id, task.completed)}>
+                                    <button className={styles.btnCompleted} onClick={() => handleToggleComplete(task.id, task.completed)}>
                                         {task.completed ? 'Marcar incompleta' : 'Marcar completada'}</button>
-                                    <button onClick={() => {
+                                    <button className={styles.btnEdit} onClick={() => {
                                         const newText = prompt('Ingresa el nuevo nombre de la tarea:', task.text);
                                         if (newText !== null) {
                                             handleEditTask(task.id, newText);
                                         }
                                     }}>Editar</button>
+                                    <button className={styles.btnDelete} onClick={() => handleDeleteTask(task.id)}>Eliminar</button>
                                 </div>
                             </div>
                         </li>

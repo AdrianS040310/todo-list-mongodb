@@ -69,4 +69,38 @@
 .options {
     display: flex;
     flex-direction: row;
+    padding: 5px;
+}
+
+.btnDelete {
+    background-color: rgb(245, 48, 18);
+    color: #fff;
+    border-color: #fff;
+    border-width: 3px;
+    margin-left: 10px;
+    height: 35px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.btnCompleted {
+    background-color: rgb(31, 242, 28);
+    color: #000;
+    border-color: #fff;
+    border-width: 3px;
+    margin-left: 10px;
+    height: 35px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.btnEdit {
+    background-color: rgb(223, 191, 30);
+    color: #000;
+    border-color: #fff;
+    border-width: 3px;
+    margin-left: 10px;
+    height: 35px;
+    font-size: 14px;
+    font-weight: 600;
 }

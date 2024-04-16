@@ -51,7 +51,7 @@ const Navbar = () => {
                             <Link href="/tasks">Tareas</Link>
                         </li>
                         <li>
-                            <button onClick={handleLogout}>Cerrar Sesión</button>
+                            <button className={styles.btnCloseSesion} onClick={handleLogout}>Cerrar Sesión</button>
                         </li>
                     </>
                 ) : (
